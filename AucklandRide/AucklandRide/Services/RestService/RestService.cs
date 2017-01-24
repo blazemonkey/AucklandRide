@@ -42,7 +42,7 @@ namespace AucklandRide.Updater.Services.RestService
             return result.Response;
         }
 
-        public async Task<IRestResponse<RestWrapper<T>>> ExecuteRequest<T>(RestClient client, RestRequest request)
+        public async virtual Task<IRestResponse<RestWrapper<T>>> ExecuteRequest<T>(RestClient client, RestRequest request)
         {
             return await client.ExecuteTaskAsync<RestWrapper<T>>(request);
         }
