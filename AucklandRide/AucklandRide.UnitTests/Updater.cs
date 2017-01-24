@@ -7,6 +7,10 @@ using System.Collections.Generic;
 using AucklandRide.Updater.Models;
 using System.Linq;
 using AucklandRide.Services.WebClientService;
+using AucklandRide.Updater.Services.SqlService;
+using System.Data;
+using System.Data.Entity;
+using System.Threading.Tasks;
 
 namespace AucklandRide.UnitTests
 {
@@ -14,12 +18,14 @@ namespace AucklandRide.UnitTests
     public class Updater
     {
         protected Mock<RestService> mockRestService;
+        protected Mock<SqlService> mockSqlService;
         protected Mock<WebClientService> mockWebClientService;
 
         [TestInitialize]
         public void InitTests()
         {
             mockRestService = new Mock<RestService>();
+            mockSqlService = new Mock<SqlService>();
             mockWebClientService = new Mock<WebClientService>();
         }
 
@@ -37,12 +43,30 @@ namespace AucklandRide.UnitTests
             mockRestService.Setup(x => x.ExecuteRequest<AucklandRide.Updater.Models.Version>(It.IsAny<RestClient>(),
                 It.IsAny<RestRequest>())).ReturnsAsync(response);
 
-            var version = mockRestService.Object.GetVersion().Result;
+            var version = mockRestService.Object.GetVersions().Result;
             Assert.IsNotNull(version);
             Assert.IsTrue(version.Count() == 1);
             Assert.IsNotNull(version.First().Ver);
             Assert.IsNotNull(version.First().StartDate);
             Assert.IsNotNull(version.First().EndDate);
+        }
+
+        [TestMethod]
+        public void Sql_AddVersions()
+        {
+            var mockVersions = new Mock<DbSet<AucklandRide.Updater.Models.Version>>();
+            var mockContext = new Mock<AucklandRideContext>();
+            mockContext.Setup(x => x.Versions).Returns(mockVersions.Object);
+
+            var versionsList = new List<AucklandRide.Updater.Models.Version>();
+            var version1 = new AucklandRide.Updater.Models.Version { Ver = "20170116102900_v50.11", StartDate = DateTime.Parse("2017-01-19 00:00:00.000"), EndDate = DateTime.Parse("2017-03-19 00:00:00.000") };
+            versionsList.Add(version1);
+
+            mockSqlService.Setup(x => x.GetDbContext()).Returns(mockContext.Object);
+            mockSqlService.Setup(x => x.OpenAsync(It.IsAny<DbContext>())).Returns(Task.FromResult(0));         
+            mockSqlService.Object.AddVersions(versionsList).Wait();
+            mockVersions.Verify(x => x.AddRange(It.IsAny<IEnumerable<AucklandRide.Updater.Models.Version>>()), Times.Once());
+            mockContext.Verify(x => x.SaveChangesAsync(), Times.Once());
         }
 
         [TestMethod]

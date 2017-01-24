@@ -47,7 +47,7 @@ namespace AucklandRide.Updater.Services.RestService
             return await client.ExecuteTaskAsync<RestWrapper<T>>(request);
         }
 
-        public async Task<IEnumerable<Models.Version>> GetVersion()
+        public async Task<IEnumerable<Models.Version>> GetVersions()
         {
             var client = GetRestClient();
             var request = new RestRequest("versions", Method.GET);

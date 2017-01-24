@@ -1,5 +1,6 @@
 ﻿using AucklandRide.Services.WebClientService;
 using AucklandRide.Updater.Services.RestService;
+using AucklandRide.Updater.Services.SqlService;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace AucklandRide.Updater
                 using (var container = new UnityContainer())
                 {
                     container.RegisterType<IRestService, RestService>();
+                    container.RegisterType<ISqlService, SqlService>();
                     container.RegisterType<IWebClientService, WebClientService>();
                     var updater = container.Resolve<Updater>();
                     await updater.Run();

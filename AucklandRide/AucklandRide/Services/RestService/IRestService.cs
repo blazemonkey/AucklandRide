@@ -8,6 +8,6 @@ namespace AucklandRide.Updater.Services.RestService
 {
     public interface IRestService
     {
-        Task<IEnumerable<Models.Version>> GetVersion();
+        Task<IEnumerable<Models.Version>> GetVersions();
     }
 }

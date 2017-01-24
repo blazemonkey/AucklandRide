@@ -44,3 +44,7 @@ Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\Mic
 Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\Newtonsoft.Json.xml
 Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\RestSharp.xml
 Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\obj\Debug\AucklandRide.Updater.csprojResolveAssemblyReference.cache
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.dll
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.SqlServer.dll
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.xml
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.SqlServer.xml

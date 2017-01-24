@@ -21,3 +21,32 @@ Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin
 Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide.UnitTests\obj\Debug\AucklandRide.UnitTests.csprojResolveAssemblyReference.cache
 Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide.UnitTests\obj\Debug\AucklandRide.UnitTests.dll
 Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide.UnitTests\obj\Debug\AucklandRide.UnitTests.pdb
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\AucklandRide.UnitTests.dll
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\AucklandRide.UnitTests.pdb
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\AucklandRide.Updater.exe
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\Castle.Core.dll
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\Moq.dll
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\RestSharp.dll
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\CsvHelper.dll
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\Microsoft.Practices.Unity.dll
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\Newtonsoft.Json.dll
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\AucklandRide.Updater.pdb
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\Castle.Core.xml
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\Moq.xml
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\RestSharp.xml
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\CsvHelper.xml
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\Microsoft.Practices.Unity.xml
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\Newtonsoft.Json.xml
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\Microsoft.Practices.ServiceLocation.xml
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\obj\Debug\AucklandRide.UnitTests.csprojResolveAssemblyReference.cache
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\obj\Debug\AucklandRide.UnitTests.dll
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\obj\Debug\AucklandRide.UnitTests.pdb
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\EntityFramework.dll
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\EntityFramework.xml
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\AucklandRide.UnitTests.dll.config
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\EntityFramework.SqlServer.dll
+C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\EntityFramework.SqlServer.xml
