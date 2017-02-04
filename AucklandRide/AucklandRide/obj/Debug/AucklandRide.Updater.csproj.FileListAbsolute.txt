@@ -48,3 +48,10 @@ C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide\bin\Debug\Entity
 C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.SqlServer.dll
 C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.xml
 C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.SqlServer.xml
+Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.dll
+Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.SqlServer.dll
+Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.xml
+Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.SqlServer.xml
+Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.MappingAPI.dll
+Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.MappingAPI.pdb
+Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.Utilities.dll

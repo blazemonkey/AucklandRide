@@ -50,3 +50,9 @@ C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\De
 C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\AucklandRide.UnitTests.dll.config
 C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\EntityFramework.SqlServer.dll
 C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\EntityFramework.SqlServer.xml
+Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\AucklandRide.UnitTests.dll.config
+Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\EntityFramework.dll
+Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\EntityFramework.SqlServer.dll
+Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\EntityFramework.xml
+Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\EntityFramework.SqlServer.xml
+Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\EntityFramework.Utilities.dll

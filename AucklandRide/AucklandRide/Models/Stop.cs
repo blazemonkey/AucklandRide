@@ -1,6 +1,7 @@
 ﻿using CsvHelper.Configuration;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,15 +10,27 @@ namespace AucklandRide.Updater.Models
 {
     public class Stop
     {
+        [StringLength(20)]
         public string Id { get; set; }
+
+        [Required]
+        [StringLength(100)]
         public string Name { get; set; }
+
+        [StringLength(255)]
         public string Description { get; set; }
+
         public decimal Latitude { get; set; }
+
         public decimal Longitude { get; set; }
-        public string ZoneId { get; set; }
+
+        public int? ZoneId { get; set; }
+
         public int Code { get; set; }
+
         public byte LocationType { get; set; }
-        public string ParentStation { get; set; }
+
+        public int? ParentStation { get; set; }
     }
 
     public sealed class StopMap : CsvClassMap<Stop>

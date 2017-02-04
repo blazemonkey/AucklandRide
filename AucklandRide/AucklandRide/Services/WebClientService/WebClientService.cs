@@ -20,7 +20,7 @@ namespace AucklandRide.Services.WebClientService
             try
             {
                 var result = string.Empty;
-                using (var client = new HttpClient())
+                using (var client = new HttpClient() { Timeout = new TimeSpan(0, 10, 0) })
                 {
                     result = await client.GetStringAsync(url);
                 }

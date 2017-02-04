@@ -1,6 +1,8 @@
 ﻿using CsvHelper.Configuration;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,10 +11,17 @@ namespace AucklandRide.Updater.Models
 {
     public class Shape
     {
+        [StringLength(35)]
+        [Key, Column(Order=0)]
         public string Id { get; set; }
+
         public decimal Latitude { get; set; }
+
         public decimal Longitude { get; set; }
+
+        [Key, Column(Order = 3)]
         public int Sequence { get; set; }
+
         public int? Distance { get; set; }
     }
 

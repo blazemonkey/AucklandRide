@@ -1,6 +1,7 @@
 ﻿using CsvHelper.Configuration;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,12 +10,27 @@ namespace AucklandRide.Updater.Models
 {
     public class Route
     {
+        [StringLength(35)]
         public string Id { get; set; }
+
+        [Required]
+        [StringLength(20)]
         public string AgencyId { get; set; }
+
+        [Required]
+        [StringLength(4)]
         public string ShortName { get; set; }
+
+        [Required]
+        [StringLength(100)]
         public string LongName { get; set; }
+
         public byte Type { get; set; }
+
+        [StringLength(20)]
         public string Color { get; set; }
+
+        [StringLength(20)]
         public string TextColor { get; set; }
     }
 

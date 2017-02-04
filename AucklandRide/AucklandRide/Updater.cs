@@ -25,6 +25,21 @@ namespace AucklandRide.Updater
             var dbVers = await SqlService.GetVersions();
 
             var updateReq = IsNewVersionDetected(dbVers, latestVers);
+            if (!updateReq)
+            {
+                var agencies = WebClientService.GetAgencies();
+                var calendars = WebClientService.GetCalendars();
+                var calendarDates = WebClientService.GetCalendarDates();
+                var routes = WebClientService.GetRoutes();
+                var shapes = WebClientService.GetShapes();
+                var stops = WebClientService.GetStops();
+                var stopTimes = WebClientService.GetStopTimes();
+                var trips = WebClientService.GetTrips();
+
+                await Task.WhenAll(agencies, calendars, calendarDates, routes, shapes, stops, stopTimes, trips);
+                await SqlService.DeleteAndReplaceAll(agencies.Result, calendars.Result, calendarDates.Result, routes.Result,
+                    shapes.Result, stops.Result, stopTimes.Result, trips.Result);
+            }
         }
 
         public bool IsNewVersionDetected(IEnumerable<Models.Version> dbVers, IEnumerable<Models.Version> latestVers)

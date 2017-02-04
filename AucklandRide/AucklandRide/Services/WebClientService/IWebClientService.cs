@@ -11,6 +11,7 @@ namespace AucklandRide.Services.WebClientService
     {
         Task<IEnumerable<Agency>> GetAgencies();
         Task<IEnumerable<Calendar>> GetCalendars();
+        Task<IEnumerable<CalendarDate>> GetCalendarDates();
         Task<IEnumerable<Route>> GetRoutes();
         Task<IEnumerable<Shape>> GetShapes();
         Task<IEnumerable<Stop>> GetStops();
