@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0-*",
+  "frameworks": {
+    "net45+win+MonoAndroid10+Xamarin.iOS10+MonoTouch10": {
+      "wrappedProject": "../../AucklandRide.Models/AucklandRide.Models.csproj",
+      "bin": {
+        "assembly": "../../AucklandRide.Models/obj/{configuration}/AucklandRide.Models.dll",
+        "pdb": "../../AucklandRide.Models/obj/{configuration}/AucklandRide.Models.pdb"
+      }
+    }
+  }
+}

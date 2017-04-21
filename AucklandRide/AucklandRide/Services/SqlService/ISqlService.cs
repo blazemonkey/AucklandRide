@@ -11,7 +11,10 @@ namespace AucklandRide.Updater.Services.SqlService
     {
         Task DeleteAndReplaceAll(IEnumerable<Agency> agencies, IEnumerable<Calendar> calendars, IEnumerable<CalendarDate> calendarDates,
             IEnumerable<Route> routes, IEnumerable<Shape> shapes, IEnumerable<Stop> stops, IEnumerable<StopTime> stopTimes, IEnumerable<Trip> trips);
+        Task AddLogging(Logging logging);
         Task AddVersions(IEnumerable<Models.Version> versions);
         Task<IEnumerable<Models.Version>> GetVersions();
+        Task AddStopRegions(IEnumerable<StopRegion> stopRegions);
+        Task<IEnumerable<StopRegion>> GetStopRegions();
     }
 }

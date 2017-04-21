@@ -1,8 +1,11 @@
 ﻿using AucklandRide.Updater.Models;
 using EntityFramework.Utilities;
+using FastMember;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +14,8 @@ namespace AucklandRide.Updater.Services.SqlService
 {
     public class SqlService : ISqlService
     {
+        private string _connString = ConfigurationManager.ConnectionStrings["AucklandRideContext"].ConnectionString;
+
         public virtual AucklandRideContext GetDbContext()
         {
             return new AucklandRideContext();
@@ -24,44 +29,83 @@ namespace AucklandRide.Updater.Services.SqlService
         public async Task DeleteAndReplaceAll(IEnumerable<Agency> agencies, IEnumerable<Calendar> calendars, IEnumerable<CalendarDate> calendarDates,
             IEnumerable<Route> routes, IEnumerable<Shape> shapes, IEnumerable<Stop> stops, IEnumerable<StopTime> stopTimes, IEnumerable<Trip> trips)
         {
-            var db = GetDbContext();
-            db.Configuration.AutoDetectChangesEnabled = false;
-            db.Configuration.ValidateOnSaveEnabled = false;
-            await db.Database.ExecuteSqlCommandAsync("TRUNCATE TABLE Agencies");
-            await db.Database.ExecuteSqlCommandAsync("TRUNCATE TABLE Calendars");
-            await db.Database.ExecuteSqlCommandAsync("TRUNCATE TABLE CalendarDates");
-            await db.Database.ExecuteSqlCommandAsync("TRUNCATE TABLE Routes");
-            await db.Database.ExecuteSqlCommandAsync("TRUNCATE TABLE Shapes");
-            await db.Database.ExecuteSqlCommandAsync("TRUNCATE TABLE Stops");
-            await db.Database.ExecuteSqlCommandAsync("TRUNCATE TABLE StopTimes");
-            await db.Database.ExecuteSqlCommandAsync("TRUNCATE TABLE Trips");
-            EFBatchOperation.For(db, db.Agencies).InsertAll(agencies);
-            EFBatchOperation.For(db, db.Calendars).InsertAll(calendars);
-            EFBatchOperation.For(db, db.CalendarDates).InsertAll(calendarDates);
-            EFBatchOperation.For(db, db.Routes).InsertAll(routes);
-            EFBatchOperation.For(db, db.Shapes).InsertAll(shapes);
-            EFBatchOperation.For(db, db.Stops).InsertAll(stops);
-            EFBatchOperation.For(db, db.StopTimes).InsertAll(stopTimes);
-            EFBatchOperation.For(db, db.Trips).InsertAll(trips);
+            using (var conn = new SqlConnection(_connString))
+            {
+                await conn.OpenAsync();
+                var trans = conn.BeginTransaction();
+
+                try
+                {
+                    var cmd = new SqlCommand()
+                    {
+                        CommandTimeout = 60 * 10,
+                        Connection = conn,
+                        Transaction = trans
+                    };
+
+                    await DeleteAndInsert(cmd, "Agencies", agencies);
+                    await DeleteAndInsert(cmd, "Calendars", calendars);
+                    await DeleteAndInsert(cmd, "CalendarDates", calendarDates);
+                    await DeleteAndInsert(cmd, "Routes", routes);
+                    await DeleteAndInsert(cmd, "Shapes", shapes);
+                    await DeleteAndInsert(cmd, "Stops", stops);
+                    await DeleteAndInsert(cmd, "StopTimes", stopTimes);
+                    await DeleteAndInsert(cmd, "Trips", trips);
+
+                    trans.Commit();
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    await AddLogging(new Logging("DeleteAndReplaceAll", LoggingState.Exception, ex.Message));
+                }
+                finally
+                {
+                    trans.Dispose();
+                }
+            }
         }
 
-        //private async Task<DbContext> BatchInsert<T>(IEnumerable<T> collection, DbSet set, int batchSize, DbContext db)
-        //{
-        //    var count = 0;
-        //    for (var i = 0; i < collection.Count(); i = i + batchSize)
-        //    {
-        //        count++;
-        //        var sub = collection.Skip(i).Take(batchSize);
-        //        set.AddRange(sub);
-        //        await db.SaveChangesAsync();
+        private async Task DeleteAndInsert<T>(SqlCommand cmd, string tableName, IEnumerable<T> collection)
+        {
+            if (collection == null)
+                return;
 
-        //        if (count == 10)
-        //        {
+            await AddLogging(new Logging("DeleteAndInsert" + tableName, LoggingState.Started, "Rows: " + collection.Count()));
+            var columns = typeof(T).GetProperties().Select(x => x.Name).ToArray();
+            var sql = string.Format("TRUNCATE TABLE {0}", tableName);
+            cmd.CommandText = sql;
+            await cmd.ExecuteNonQueryAsync();
 
-        //        }
-        //    }
-        //}
+            using (var bcp = new SqlBulkCopy(cmd.Connection, SqlBulkCopyOptions.TableLock, cmd.Transaction))
+            using (var reader = ObjectReader.Create(collection, columns))
+            {
+                bcp.BulkCopyTimeout = 60 * 120;
+                bcp.BatchSize = 100000;
+                bcp.DestinationTableName = tableName;
+                bcp.WriteToServer(reader);
+            }
+            await AddLogging(new Logging("DeleteAndInsert" + tableName, LoggingState.Completed));
+        }
 
+        public async Task AddStopRegions(IEnumerable<StopRegion> stopRegions)
+        {
+            using (var db = GetDbContext())
+            {
+                await OpenAsync(db);
+                db.StopRegions.AddRange(stopRegions);
+                await db.SaveChangesAsync();
+            }
+        }
+
+        public async Task<IEnumerable<StopRegion>> GetStopRegions()
+        {
+            using (var db = GetDbContext())
+            {
+                await OpenAsync(db);
+                return await db.StopRegions.ToListAsync();
+            }
+        }
 
         public async Task AddVersions(IEnumerable<Models.Version> versions)
         {
@@ -79,6 +123,16 @@ namespace AucklandRide.Updater.Services.SqlService
             {
                 await OpenAsync(db);
                 return await db.Versions.ToListAsync();
+            }
+        }
+
+        public async Task AddLogging(Logging logging)
+        {
+            using (var db = GetDbContext())
+            {
+                await OpenAsync(db);
+                db.Loggings.Add(logging);
+                await db.SaveChangesAsync();
             }
         }
     }

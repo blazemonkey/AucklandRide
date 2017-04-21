@@ -52,24 +52,6 @@ namespace AucklandRide.UnitTests
         }
 
         [TestMethod]
-        public void Sql_AddVersions()
-        {
-            var mockVersions = new Mock<DbSet<AucklandRide.Updater.Models.Version>>();
-            var mockContext = new Mock<AucklandRideContext>();
-            mockContext.Setup(x => x.Versions).Returns(mockVersions.Object);
-
-            var versionsList = new List<AucklandRide.Updater.Models.Version>();
-            var version1 = new AucklandRide.Updater.Models.Version { Ver = "20170116102900_v50.11", StartDate = DateTime.Parse("2017-01-19 00:00:00.000"), EndDate = DateTime.Parse("2017-03-19 00:00:00.000") };
-            versionsList.Add(version1);
-
-            mockSqlService.Setup(x => x.GetDbContext()).Returns(mockContext.Object);
-            mockSqlService.Setup(x => x.OpenAsync(It.IsAny<DbContext>())).Returns(Task.FromResult(0));         
-            mockSqlService.Object.AddVersions(versionsList).Wait();
-            mockVersions.Verify(x => x.AddRange(It.IsAny<IEnumerable<AucklandRide.Updater.Models.Version>>()), Times.Once());
-            mockContext.Verify(x => x.SaveChangesAsync(), Times.Once());
-        }
-
-        [TestMethod]
         public void WebClient_GetAgencies()
         {
             var content = @"agency_phone,agency_url,agency_id,agency_name,agency_timezone,agency_lang

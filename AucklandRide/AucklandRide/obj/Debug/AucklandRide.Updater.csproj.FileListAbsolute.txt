@@ -55,3 +55,4 @@ Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\Ent
 Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.MappingAPI.dll
 Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.MappingAPI.pdb
 Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.Utilities.dll
+Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\FastMember.dll

@@ -12,14 +12,12 @@ namespace AucklandRide.Updater.Services.WebClientService
     {
         public override object ConvertFromString(TypeConverterOptions options, string text)
         {
-            TimeSpan ts;
-            if (TimeSpan.TryParseExact(text, options.Format, CultureInfo.InvariantCulture, TimeSpanStyles.None, out ts))
+            if (TimeSpan.TryParseExact(text, options.Format, CultureInfo.InvariantCulture, TimeSpanStyles.None, out TimeSpan ts))
                 return ts;
             else
             {
                 var hour = text.Substring(0, 2);
-                var hourInt = 0;
-                if (int.TryParse(hour, out hourInt))
+                if (int.TryParse(hour, out int hourInt))
                 {
                     if (hourInt >= 24)
                     {

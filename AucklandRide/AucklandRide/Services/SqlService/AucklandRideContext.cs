@@ -16,9 +16,11 @@ namespace AucklandRide.Updater.Services.SqlService
         public virtual DbSet<Agency> Agencies { get; set; }
         public virtual DbSet<CalendarDate> CalendarDates { get; set; }
         public virtual DbSet<Calendar> Calendars { get; set; }
+        public virtual DbSet<Logging> Loggings { get; set; }
         public virtual DbSet<Route> Routes { get; set; }
         public virtual DbSet<Shape> Shapes { get; set; }
         public virtual DbSet<Stop> Stops { get; set; }
+        public virtual DbSet<StopRegion> StopRegions { get; set; }
         public virtual DbSet<StopTime> StopTimes { get; set; }
         public virtual DbSet<Trip> Trips { get; set; }
         public virtual DbSet<Models.Version> Versions { get; set; }
@@ -55,6 +57,10 @@ namespace AucklandRide.Updater.Services.SqlService
 
             modelBuilder.Entity<Calendar>()
                 .Property(e => e.ServiceId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Logging>()
+                .Property(e => e.Message)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Route>()
@@ -112,6 +118,10 @@ namespace AucklandRide.Updater.Services.SqlService
             modelBuilder.Entity<Stop>()
                 .Property(e => e.Longitude)
                 .HasPrecision(10, 5);
+
+            modelBuilder.Entity<StopRegion>()
+                .Property(e => e.StopId)
+                .IsUnicode(false);
 
             modelBuilder.Entity<StopTime>()
                 .Property(e => e.TripId)

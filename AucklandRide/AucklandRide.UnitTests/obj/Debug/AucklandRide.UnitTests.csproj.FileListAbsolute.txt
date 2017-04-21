@@ -55,4 +55,5 @@ Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin
 Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\EntityFramework.SqlServer.dll
 Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\EntityFramework.xml
 Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\EntityFramework.SqlServer.xml
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\EntityFramework.Utilities.dll
+Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\FastMember.dll
+Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide.UnitTests\bin\Debug\AucklandRide.Updater.exe.config

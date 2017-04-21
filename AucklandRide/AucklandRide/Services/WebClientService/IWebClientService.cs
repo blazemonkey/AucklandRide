@@ -17,5 +17,6 @@ namespace AucklandRide.Services.WebClientService
         Task<IEnumerable<Stop>> GetStops();
         Task<IEnumerable<StopTime>> GetStopTimes();
         Task<IEnumerable<Trip>> GetTrips();
+        Task<string> GetLocationFromGoogle(decimal latitude, decimal longitude);
     }
 }
