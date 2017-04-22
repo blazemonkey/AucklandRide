@@ -21,38 +21,7 @@ C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide\bin\Debug\CsvHel
 C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide\bin\Debug\CsvHelper.xml
 C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide\bin\Debug\Newtonsoft.Json.dll
 C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide\bin\Debug\Newtonsoft.Json.xml
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\AucklandRide.Updater.exe.config
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\obj\Debug\AucklandRide.Updater.exe
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\obj\Debug\AucklandRide.Updater.pdb
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\AucklandRide.Updater.exe
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\AucklandRide.Updater.pdb
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\Castle.Core.dll
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\CsvHelper.dll
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\Microsoft.Practices.ServiceLocation.dll
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\Microsoft.Practices.Unity.Configuration.dll
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\Microsoft.Practices.Unity.dll
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\Microsoft.Practices.Unity.RegistrationByConvention.dll
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\Newtonsoft.Json.dll
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\RestSharp.dll
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\Castle.Core.xml
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\CsvHelper.xml
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\Microsoft.Practices.ServiceLocation.xml
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\Microsoft.Practices.Unity.xml
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\Microsoft.Practices.Unity.Configuration.xml
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\Microsoft.Practices.Unity.RegistrationByConvention.xml
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\Newtonsoft.Json.xml
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\RestSharp.xml
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\obj\Debug\AucklandRide.Updater.csprojResolveAssemblyReference.cache
 C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.dll
 C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.SqlServer.dll
 C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.xml
 C:\TW-Tools\Testing Code\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.SqlServer.xml
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.dll
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.SqlServer.dll
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.xml
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.SqlServer.xml
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.MappingAPI.dll
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.MappingAPI.pdb
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\EntityFramework.Utilities.dll
-Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\FastMember.dll

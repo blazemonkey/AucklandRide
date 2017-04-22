@@ -39,12 +39,13 @@ namespace AucklandRide.Api.Services.SqlService
                 {
                     Id = reader.GetString(0),
                     Name = reader.GetString(1),
-                    RegionName = reader.GetString(2)
+                    Code = reader.GetInt32(2),
+                    RegionName = reader.GetString(3)
                 };
                 stops.Add(stop);
             };
 
-            return await GetAll("SELECT s.Id, s.Name, sr.Name AS RegionName FROM Stops AS s JOIN StopRegions AS sr ON s.Id = sr.StopId", addAction);
+            return await GetAll("SELECT s.Id, s.Name, s.Code, sr.Name AS RegionName FROM Stops AS s JOIN StopRegions AS sr ON s.Id = sr.StopId", addAction);
         }
 
         public async Task<Stop> GetStopById(string stopId)

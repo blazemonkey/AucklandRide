@@ -4,9 +4,31 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:AucklandRide.UWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:m="using:AucklandRide.UWP.Models"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ctl="using:AucklandRide.UWP.Controls.UserControls"
+    xmlns:converters="using:AucklandRide.UWP.Converters"
+    xmlns:prism="using:Prism.Windows.Mvvm"    
+    NavigationCacheMode="Enabled"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <CollectionViewSource x:Key="CollectionViewSource" x:Name="CollectionViewSource" />
+        <DataTemplate x:Key="StopsListTemplate" x:DataType="m:Stop">
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{x:Bind Code}" Width="50" VerticalAlignment="Center"/>
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="{x:Bind Name}" />
+                    <TextBlock Text="{x:Bind RegionName}" FontSize="14" Foreground="Gray" FontWeight="SemiBold"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
 
     <Page.Transitions>
         <TransitionCollection>
@@ -31,11 +53,37 @@
         </Grid>
         <Grid Grid.Row="1">
             <Pivot>
-                <PivotItem>
+                <PivotItem Margin="-10,0,-10,0">
                     <PivotItem.Header>
                         <ctl:TabHeader Label="Search" Glyph="&#xE721;" />
                     </PivotItem.Header>
-                   
+                    <Grid>
+                        <StackPanel Orientation="Vertical" 
+                            VerticalAlignment="Center"
+                            Visibility="{x:Bind IsLoading, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <ProgressBar IsIndeterminate="True" />
+                                <TextBlock Text="Retrieving Stops...Please Wait..."
+                               Margin="0,5,0,0"
+                               HorizontalAlignment="Center" 
+                               FontStyle="Italic"/>
+                            </StackPanel>
+                        <Grid Visibility="{x:Bind IsLoading, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Background="SlateGray">
+                                <TextBox Margin="20"
+                                         Height="24" 
+                                         PlaceholderText="Enter Stop's Id, Name or Region"/>
+                            </Grid>
+                            <ListView Grid.Row="1"
+                                  x:Name="StopsList" 
+                                  Margin="20"
+                                  ItemTemplate="{StaticResource StopsListTemplate}"
+                                  ItemsSource="{Binding Source={StaticResource CollectionViewSource}}"/>
+                        </Grid>
+                    </Grid>
                 </PivotItem>
                 <PivotItem>
                     <PivotItem.Header>

@@ -1,7 +1,10 @@
-﻿using System;
+﻿using AucklandRide.UWP.Services;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -20,11 +23,41 @@ namespace AucklandRide.UWP.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class StopsPage : Page
+    public sealed partial class StopsPage : Page, INotifyPropertyChanged
     {
+        private bool _isLoading;
+
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set { _isLoading = value;
+                OnPropertyChanged();
+            }
+        }
+
         public StopsPage()
         {
             this.InitializeComponent();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            if (CollectionViewSource.Source == null)
+            {
+                IsLoading = true;
+                var stops = await RestService.GetStops();
+                CollectionViewSource.Source = stops;
+                IsLoading = false;
+            }
+        }
+
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
