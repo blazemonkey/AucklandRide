@@ -93,7 +93,15 @@ namespace AucklandRide.Services.WebClientService
 
         public async Task<IEnumerable<Route>> GetRoutes()
         {
-            return await ExecuteGet<Route, RouteMap>("GetRoutes", "routes.txt");
+            var routes = await ExecuteGet<Route, RouteMap>("GetRoutes", "routes.txt");
+            foreach (var r in routes)
+            {
+                var splitRouteId = r.Id.Split('-');
+                r.ShortId = splitRouteId[0];
+                r.Version = splitRouteId[1];
+            }
+
+            return routes;
         }
 
         public async Task<IEnumerable<Shape>> GetShapes()

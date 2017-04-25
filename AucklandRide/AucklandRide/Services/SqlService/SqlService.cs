@@ -88,6 +88,55 @@ namespace AucklandRide.Updater.Services.SqlService
             await AddLogging(new Logging("DeleteAndInsert" + tableName, LoggingState.Completed));
         }
 
+        public async Task UpdateTripsTime()
+        {
+            using (var conn = new SqlConnection(_connString))
+            {
+                await conn.OpenAsync();
+                var trans = conn.BeginTransaction();
+
+                try
+                {                                        
+                    var sql = "UPDATE t " + 
+                        "SET t.FirstArrivalTime = st.ArrivalTime " + 
+                        "FROM Trips AS t " + 
+                        "JOIN StopTimes AS st " + 
+                        "ON t.Id = st.TripId " + 
+                        "WHERE StopSequence = 1";
+                    var cmd = new SqlCommand(sql, conn, trans)
+                    {
+                        CommandTimeout = 60 * 10
+                    };
+                    await cmd.ExecuteNonQueryAsync();
+
+                    sql = "UPDATE t " +
+                        "SET t.LastDepartureTime = sta.DepartureTime " +
+                        "FROM StopTimes sta " + 
+                        "LEFT OUTER JOIN StopTimes stb " +
+                        "ON sta.TripId = stb.TripId AND sta.StopSequence < stb.StopSequence " +
+                        "JOIN Trips AS t " +
+                        "ON sta.TripId = t.Id " +
+                        "WHERE stb.TripId IS NULL; ";
+                    cmd = new SqlCommand(sql, conn, trans)
+                    {
+                        CommandTimeout = 60 * 10
+                    };
+                    await cmd.ExecuteNonQueryAsync();
+
+                    trans.Commit();
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    await AddLogging(new Logging("UpdateTripsTime", LoggingState.Exception, ex.Message));
+                }
+                finally
+                {
+                    trans.Dispose();
+                }
+            }
+        }
+
         public async Task AddStopRegions(IEnumerable<StopRegion> stopRegions)
         {
             using (var db = GetDbContext())
@@ -112,6 +161,7 @@ namespace AucklandRide.Updater.Services.SqlService
             using (var db = GetDbContext())
             {
                 await OpenAsync(db);
+                db.Versions.RemoveRange(db.Versions);
                 db.Versions.AddRange(versions);
                 await db.SaveChangesAsync();
             }
@@ -124,7 +174,7 @@ namespace AucklandRide.Updater.Services.SqlService
                 await OpenAsync(db);
                 return await db.Versions.ToListAsync();
             }
-        }
+        }        
 
         public async Task AddLogging(Logging logging)
         {

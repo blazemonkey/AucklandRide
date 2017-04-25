@@ -16,5 +16,6 @@ namespace AucklandRide.Updater.Services.SqlService
         Task<IEnumerable<Models.Version>> GetVersions();
         Task AddStopRegions(IEnumerable<StopRegion> stopRegions);
         Task<IEnumerable<StopRegion>> GetStopRegions();
+        Task UpdateTripsTime();
     }
 }

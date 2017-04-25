@@ -32,6 +32,10 @@ namespace AucklandRide.Updater.Models
 
         [StringLength(20)]
         public string TextColor { get; set; }
+        [StringLength(5)]
+        public string ShortId { get; set; }
+        [StringLength(35)]
+        public string Version { get; set; }
     }
 
     public class RouteMap : CsvClassMap<Route>

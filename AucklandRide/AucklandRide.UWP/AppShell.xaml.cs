@@ -28,19 +28,26 @@ namespace AucklandRide.UWP
     public sealed partial class AppShell : Page
     {
         private bool isPaddingAdded = false;
+        
         // Declare the top level nav items
         private List<NavMenuItem> navlist = new List<NavMenuItem>(
             new[]
             {
                 new NavMenuItem()
                 {
-                    Symbol = Symbol.Home,
+                    SymbolId = "80F",
                     Label = "Home",
                     DestPage = typeof(MainPage)
                 },
                 new NavMenuItem()
                 {
-                    Symbol = Symbol.Stop,
+                    SymbolId = "806",
+                    Label = "Routes",
+                    DestPage = typeof(RoutesPage)
+                },
+                new NavMenuItem()
+                {
+                    SymbolId = "81B",
                     Label = "Stops",
                     DestPage = typeof(StopsPage)
                 },
@@ -55,6 +62,7 @@ namespace AucklandRide.UWP
         /// </summary>
         public AppShell()
         {
+            
             this.InitializeComponent();
 
             this.Loaded += (sender, args) =>

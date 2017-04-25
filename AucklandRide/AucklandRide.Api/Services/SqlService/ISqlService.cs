@@ -9,7 +9,11 @@ namespace AucklandRide.Api.Services.SqlService
     public interface ISqlService
     {
         Task<List<Agency>> GetAgencies();
+        Task<List<Route>> GetRoutes();
+        Task<Route> GetRouteById(string routeId);
+        Task<List<Shape>> GetShapesById(string shapeId);
         Task<List<Stop>> GetStops();
         Task<Stop> GetStopById(string stopId);
+        Task<List<StopTime>> GetStopTimesByTripId(string tripId);
     }
 }

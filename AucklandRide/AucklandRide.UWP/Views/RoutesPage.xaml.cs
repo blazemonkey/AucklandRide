@@ -28,22 +28,24 @@ namespace AucklandRide.UWP.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class StopsPage : Page, INotifyPropertyChanged
+    public sealed partial class RoutesPage : Page, INotifyPropertyChanged
     {
-        private Stop _lastStop;
+        private Route _lastRoute;
         private bool _isLoading;
 
         public bool IsLoading
         {
             get { return _isLoading; }
-            set { _isLoading = value;
+            set
+            {
+                _isLoading = value;
                 OnPropertyChanged();
             }
         }
 
-        public List<Stop> Stops { get; set; }
+        public List<Route> Routes { get; set; }
 
-        public StopsPage()
+        public RoutesPage()
         {
             this.InitializeComponent();
 
@@ -54,8 +56,8 @@ namespace AucklandRide.UWP.Views
                                                             .ObserveOn(SynchronizationContext.Current)
                                                             .Subscribe((x) =>
                                                             {
-                                                                CollectionViewSource.Source = Stops.Where(z => z.Name.ToLower().Contains(x) ||
-                                                                                                          z.RegionName.ToLower().Contains(x));
+                                                                CollectionViewSource.Source = Routes.Where(z => z.ShortName.ToLower().Contains(x) ||
+                                                                                                          z.LongName.ToLower().Contains(x));
                                                             });
         }
 
@@ -68,8 +70,8 @@ namespace AucklandRide.UWP.Views
             if (CollectionViewSource.Source == null)
             {
                 IsLoading = true;
-                Stops = await RestService.GetStops();
-                CollectionViewSource.Source = Stops;
+                Routes = await RestService.GetRoutes();
+                CollectionViewSource.Source = Routes;
                 IsLoading = false;
             }
 
@@ -94,32 +96,32 @@ namespace AucklandRide.UWP.Views
         {
             var isNarrow = newState == NarrowState;
 
-            if (isNarrow && oldState == MediumState && _lastStop != null)
+            if (isNarrow && oldState == MediumState && _lastRoute != null)
             {
-                _lastStop = await RestService.GetStopById(_lastStop.Id);
+                _lastRoute = await RestService.GetRouteById(_lastRoute.Id);
                 // Resize down to the detail item. Don't play a transition.
-                Frame.Navigate(typeof(StopsDetailPage), _lastStop, new SuppressNavigationTransitionInfo());
+                Frame.Navigate(typeof(RoutesDetailPage), _lastRoute, new SuppressNavigationTransitionInfo());
             }
 
-            if ((oldState == NarrowState || oldState == null) && newState == MediumState && StopsList.SelectedItem == null)
-                StopsList.SelectedItem = _lastStop;
+            if ((oldState == NarrowState || oldState == null) && newState == MediumState && RoutesList.SelectedItem == null)
+                RoutesList.SelectedItem = _lastRoute;
 
-            EntranceNavigationTransitionInfo.SetIsTargetElement(StopsList, isNarrow);
+            EntranceNavigationTransitionInfo.SetIsTargetElement(RoutesList, isNarrow);
             if (DetailContentPresenter != null)
             {
                 EntranceNavigationTransitionInfo.SetIsTargetElement(DetailContentPresenter, !isNarrow);
             }
         }
 
-        private async void StopsList_ItemClick(object sender, ItemClickEventArgs e)
+        private async void RoutesList_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var clickedItem = (Stop)e.ClickedItem;
-            _lastStop = clickedItem;
+            var clickedItem = (Route)e.ClickedItem;
+            _lastRoute = clickedItem;
 
             if (AdaptiveStates.CurrentState == NarrowState)
             {
-                _lastStop = await RestService.GetStopById(_lastStop.Id);
-                Frame.Navigate(typeof(StopsDetailPage), _lastStop, new DrillInNavigationTransitionInfo());
+                _lastRoute = await RestService.GetRouteById(_lastRoute.Id);
+                Frame.Navigate(typeof(RoutesDetailPage), _lastRoute, new DrillInNavigationTransitionInfo());
             }
             else
             {

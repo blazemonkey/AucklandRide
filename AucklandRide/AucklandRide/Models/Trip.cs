@@ -35,6 +35,10 @@ namespace AucklandRide.Updater.Models
         [Required]
         [StringLength(35)]
         public string ShapeId { get; set; }
+
+        public TimeSpan? FirstArrivalTime { get; set; }
+
+        public TimeSpan? LastDepartureTime { get; set; }
     }
 
     public sealed class TripMap : CsvClassMap<Trip>

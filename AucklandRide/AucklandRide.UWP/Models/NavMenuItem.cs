@@ -10,14 +10,14 @@ namespace AucklandRide.UWP.Models
     public class NavMenuItem
     {
         public string Label { get; set; }
-        public Symbol Symbol { get; set; }
-        public char SymbolAsChar
+        public string SymbolAsString
         {
             get
             {
-                return (char)this.Symbol;
+                return System.Net.WebUtility.HtmlDecode(string.Format("{0}{1};", "&#xE", SymbolId));
             }
         }
+        public string SymbolId { get; set; }
         public string Path { get; set; }
         public Type DestPage { get; set; }
         public object Arguments { get; set; }

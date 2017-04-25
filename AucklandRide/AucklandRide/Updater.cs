@@ -44,6 +44,13 @@ namespace AucklandRide.Updater
 
                 var stops = await WebClientService.GetStops();
                 await GetLocationFromGoogle(stops);
+
+                //var routes = await WebClientService.GetRoutes();
+                //await SqlService.DeleteAndReplaceAll(null, null, null, routes, null, null, null, null);
+
+
+                await SqlService.UpdateTripsTime();
+                await SqlService.AddVersions(latestVers);
             }
 
             await SqlService.AddLogging(new Models.Logging("Run", Models.LoggingState.Completed, "Update End"));

@@ -17,5 +17,11 @@ namespace AucklandRide.Api.Models
         public byte LocationType { get; set; }
         public int ParentStation { get; set; }
         public string RegionName { get; set; }
+        public List<Route> RoutesWithStop { get; set; }
+
+        public Stop()
+        {
+            RoutesWithStop = new List<Route>();
+        }
     }
 }
