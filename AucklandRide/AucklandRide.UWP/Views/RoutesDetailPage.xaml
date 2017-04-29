@@ -3,17 +3,73 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:AucklandRide.UWP.Views"
+    xmlns:converters="using:AucklandRide.UWP.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:m="using:AucklandRide.UWP.Models"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <converters:StringFormatConverter x:Key="StringFormatConverter"/>
+        <DataTemplate x:Key="StopTimesTemplate" x:DataType="m:StopTime">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Width="40" Height="20" Background="Black">
+                    <TextBlock Foreground="White" 
+                                VerticalAlignment="Center" 
+                                HorizontalAlignment="Center"
+                                Text="{x:Bind StopId}"
+                                FontSize="12" 
+                                Margin="5"/>
+                </Grid>
+                <TextBlock Grid.Column="1"
+                           Text="{x:Bind StopSequence}"
+                           Width="50"
+                           TextAlignment="Center"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center" />
+                <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                    <TextBlock
+                            Text="{x:Bind StopName}"
+                            Margin="5"
+                            VerticalAlignment="Center" 
+                            TextWrapping="Wrap"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock 
+                                Text="{x:Bind ArrivalTime}"
+                                Margin="5"
+                                VerticalAlignment="Center" 
+                                FontSize="12"
+                                Foreground="Gray"
+                                FontWeight="SemiBold"/>
+                        <TextBlock Text="/" VerticalAlignment="Center"
+                                   FontSize="12"
+                                   Foreground="Gray"
+                                   FontWeight="SemiBold" />
+                        <TextBlock 
+                                Text="{x:Bind DepartureTime}"
+                                Margin="5"
+                                VerticalAlignment="Center" 
+                                FontSize="12"
+                                Foreground="Gray"
+                                FontWeight="SemiBold" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="500"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid Margin="20">
                 <Grid.ColumnDefinitions>
@@ -44,9 +100,77 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
             </Grid>
-            <maps:MapControl x:Name="RoutesMapControl" Grid.Row="2"
+            <Pivot Grid.Row="2"
+                   HeaderTemplate="{StaticResource PivotSubHeader}">
+                <PivotItem Header="map" Margin="0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <CheckBox x:Name="ShowStopCheckBox" IsChecked="{x:Bind ShowStops, Mode=TwoWay}" Content="Show Stops" Margin="10" VerticalAlignment="Center" Click="ShowStopCheckBox_Click"/>
+                            <Button x:Name="ResetMapButton" Content="Reset Map" Margin="10" Click="ResetMapButton_Click"/>
+                        </StackPanel>
+                        <maps:MapControl Grid.Row="1" x:Name="RoutesMapControl"
                              MapServiceToken="qSWLBT9ABT1DAmjPgL7R~uMXkT5sDYkXM12vPHi1hQg~Ane0eC65WbHUmPYvLUf1UQ9_cW7HNVTzxjhpGjyyybrc4IeHetL7xZf0uYO1NNnb" 
                              />
+                    </Grid>
+                </PivotItem>
+                <PivotItem Header="stop times">
+                    <ListView Grid.Row="1"
+                            x:Name="StopTimesList" 
+                            ItemTemplate="{StaticResource StopTimesTemplate}" />
+                </PivotItem>
+                <PivotItem Header="calendar">
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="schedule valid from"/>
+                            <TextBlock Text="{x:Bind Calendar.StartDate.Date, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:dd/MM/yyyy}', Mode=OneWay}" Margin="2,0"/>
+                            <TextBlock Text="to" Margin="2,0"/>
+                            <TextBlock Text="{x:Bind Calendar.EndDate.Date, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:dd/MM/yyyy}', Mode=OneWay}" Margin="2,0"/>
+                        </StackPanel>
+                        <Grid Grid.Row="1" Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.5*"/>
+                                <ColumnDefinition Width="0.5*"/>
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Content="Monday" IsChecked="{x:Bind Calendar.Monday, Mode=OneWay}" Width="120" Margin="10" IsHitTestVisible="False"/>
+                            <CheckBox Grid.Row="1" Content="Tuesday" IsChecked="{x:Bind Calendar.Tuesday, Mode=OneWay}" Width="120" Margin="10" IsHitTestVisible="False"/>
+                            <CheckBox Grid.Row="2" Content="Wednesday" IsChecked="{x:Bind Calendar.Wednesday, Mode=OneWay}" Width="120" Margin="10" IsHitTestVisible="False"/>
+                            <CheckBox Grid.Row="3" Content="Thursday" IsChecked="{x:Bind Calendar.Thursday, Mode=OneWay}" Width="120" Margin="10" IsHitTestVisible="False"/>
+                            <CheckBox Grid.Column="1" Content="Friday" IsChecked="{x:Bind Calendar.Friday, Mode=OneWay}" Width="120" Margin="10" IsHitTestVisible="False"/>
+                            <CheckBox Grid.Column="1" Grid.Row="1" Content="Saturday" IsChecked="{x:Bind Calendar.Saturday, Mode=OneWay}" Width="120" Margin="10" IsHitTestVisible="False"/>
+                            <CheckBox Grid.Column="1" Grid.Row="2" Content="Sunday" IsChecked="{x:Bind Calendar.Sunday, Mode=OneWay}" Width="120" Margin="10" IsHitTestVisible="False"/>
+                        </Grid>
+                        <StackPanel Grid.Row="2" Orientation="Horizontal">
+                            <TextBlock Text="schedule not available on following dates"/>
+                        </StackPanel>
+                        <ListView Grid.Row="3"
+                                  x:Name="CalendarDatesList"
+                                  Margin="10">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="m:CalendarDate">
+                                    <TextBlock Text="{x:Bind Date, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:dd/MM/yyyy}', Mode=OneWay}"/>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </PivotItem>
+            </Pivot>
+
         </Grid>
     </Grid>
 </Page>

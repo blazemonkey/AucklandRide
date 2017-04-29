@@ -8,6 +8,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -39,7 +40,7 @@ namespace AucklandRide.UWP.Views
 
             var position = new BasicGeoposition() { Latitude = (double)Stop.Latitude, Longitude = (double)Stop.Longitude };
             StopsMapControl.Center = new Geopoint(position);
-            MapHelper.DrawPointOnMap(StopsMapControl, position.Latitude, position.Longitude, stop.Code.ToString());
+            MapHelper.DrawPointOnMap(StopsMapControl, position.Latitude, position.Longitude, stop.Code.ToString(), Colors.Black);
         }
     }
 }

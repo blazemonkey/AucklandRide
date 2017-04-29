@@ -102,13 +102,20 @@
     <Compile Include="Controls\UserControls\PageHeader.xaml.cs">
       <DependentUpon>PageHeader.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\UserControls\QuickMapControl.cs" />
+    <Compile Include="Controls\UserControls\QuickStopTime.xaml.cs">
+      <DependentUpon>QuickStopTime.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\UserControls\TabHeader.xaml.cs">
       <DependentUpon>TabHeader.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\AppendTextConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\PrependTextConverter.cs" />
+    <Compile Include="Converters\StringFormatConverter.cs" />
     <Compile Include="Helpers\MapHelper.cs" />
+    <Compile Include="Models\Calendar.cs" />
+    <Compile Include="Models\CalendarDate.cs" />
     <Compile Include="Models\NavMenuItem.cs" />
     <Compile Include="Models\Route.cs" />
     <Compile Include="Models\Shape.cs" />
@@ -159,6 +166,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\UserControls\PageHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\UserControls\QuickStopTime.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

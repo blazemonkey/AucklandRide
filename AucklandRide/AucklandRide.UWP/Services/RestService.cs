@@ -53,6 +53,11 @@ namespace AucklandRide.UWP.Services
             return await Get<T>(uri);
         }
 
+        public static async Task<Calendar> GetCalendarByServiceId(string serviceId)
+        {
+            return await GetResource<Calendar>("calendars", serviceId);
+        }
+
         public static async Task<List<Route>> GetRoutes()
         {
             return await GetResources<Route>("routes");

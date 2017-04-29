@@ -16,5 +16,6 @@ namespace AucklandRide.Api.Models
         public string ShapeId { get; set; }
         public TimeSpan? FirstArrivalTime { get; set; }
         public TimeSpan? LastDepartureTime { get; set; }
+        public Calendar Calendar { get; set; }
     }
 }

@@ -17,6 +17,7 @@ namespace AucklandRide.UWP.Models
         public int? PickupType { get; set; }
         public int? DropOffType { get; set; }
         public int? ShapeDistance { get; set; }
+        public string StopName { get; set; }
         public decimal StopLatitude { get; set; }
         public decimal StopLongitude { get; set; }
         public string StopRegionName { get; set; }

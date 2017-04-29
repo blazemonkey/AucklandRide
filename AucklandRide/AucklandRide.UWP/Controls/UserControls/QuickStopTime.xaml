@@ -1,0 +1,85 @@
+﻿<local:QuickMapControl
+    x:Class="AucklandRide.UWP.Controls.UserControls.QuickStopTime"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AucklandRide.UWP.Controls.UserControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid x:Name="PopupGrid">
+        <Grid.Background>
+            <SolidColorBrush Color="Black" Opacity="0.7"/>
+        </Grid.Background>
+        <StackPanel Background="White" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Width="300"
+                    Height="Auto">
+            <StackPanel Background="Black"
+                        Width="300"
+                        Height="Auto"
+                        Orientation="Horizontal">
+                <TextBlock Text="{x:Bind StopTime.StopSequence}"
+                           Margin="10"
+                           Foreground="White"/>
+                <TextBlock Text="-"
+                           Margin="0,10"
+                           Foreground="White"/>
+                <TextBlock Text="{x:Bind StopTime.StopId}"
+                           Margin="10"
+                           Foreground="White"/>
+            </StackPanel>
+            <StackPanel Margin="10,10,10,0"
+                        HorizontalAlignment="Center" >
+                <TextBlock Text="{x:Bind StopTime.StopName}"
+                           TextWrapping="Wrap" 
+                           TextAlignment="Center" />
+                <TextBlock Text="{x:Bind StopTime.StopRegionName}"
+                           Foreground="Gray"
+                           FontWeight="SemiBold"
+                           FontSize="14"
+                           TextWrapping="Wrap" 
+                           TextAlignment="Center" />
+            </StackPanel>
+            <StackPanel Margin="10,10,10,0"
+                        HorizontalAlignment="Center" >
+                <TextBlock Text="Arrival / Departure Time"
+                           TextAlignment="Center" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="{x:Bind StopTime.ArrivalTime}"
+                           Foreground="Gray"
+                           FontWeight="SemiBold"
+                           FontSize="14"
+                           TextWrapping="Wrap" 
+                           TextAlignment="Center" 
+                           VerticalAlignment="Center"/>
+                    <TextBlock Text="/" 
+                               Foreground="Gray"
+                               FontWeight="SemiBold" 
+                               FontSize="14"
+                               VerticalAlignment="Center"/>
+                    <TextBlock  Text="{x:Bind StopTime.DepartureTime}"
+                                Margin="5"
+                                VerticalAlignment="Center"
+                                FontSize="14"
+                                Foreground="Gray"
+                                FontWeight="SemiBold" />
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="5">
+                <Button x:Name="BackToMapButton"
+                        Content="back to map"
+                        Background="Black"
+                        Foreground="White"
+                        HorizontalAlignment="Stretch"
+                        Width="Auto"
+                        Margin="10"
+                        Tapped="BackToMapButton_Tapped">
+                </Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</local:QuickMapControl>

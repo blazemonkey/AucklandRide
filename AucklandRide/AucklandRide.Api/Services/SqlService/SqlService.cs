@@ -31,6 +31,45 @@ namespace AucklandRide.Api.Services.SqlService
             return await GetAll("SELECT * FROM Agencies", addAction);
         }
 
+        public async Task<Calendar> GetCalendarByServiceId(string serviceId)
+        {
+            Func<Calendar, SqlDataReader, Calendar> addCalendarAction = (a, reader) =>
+            {
+                a = new Calendar()
+                {
+                    ServiceId = reader.GetString(0),
+                    StartDate = reader.GetDateTime(1),
+                    EndDate = reader.GetDateTime(2),
+                    Monday = reader.GetBoolean(3),
+                    Tuesday = reader.GetBoolean(4),
+                    Wednesday = reader.GetBoolean(5),
+                    Thursday = reader.GetBoolean(6),
+                    Friday = reader.GetBoolean(7),
+                    Saturday = reader.GetBoolean(8),
+                    Sunday = reader.GetBoolean(9)
+                };
+
+                return a;
+            };
+
+            Action<List<CalendarDate>, SqlDataReader> addDatesAction = (cds, reader) =>
+            {
+                var cd = new CalendarDate()
+                {
+                    ServiceId = reader.GetString(0),
+                    Date = reader.GetDateTime(1),
+                    ExceptionType = reader.GetByte(2),
+                };
+                cds.Add(cd);
+            };
+
+            var calendar = await GetById("SELECT * FROM Calendars", "ServiceId", serviceId, addCalendarAction);
+            var dates = await GetAllById("SELECT * FROM CalendarDates", "ServiceId", serviceId, addDatesAction);
+            calendar.CalendarDates = dates;
+
+            return calendar;
+        }
+
         public async Task<List<Route>> GetRoutes()
         {
             Action<List<Route>, SqlDataReader> addAction = (routes, reader) =>
@@ -89,13 +128,13 @@ namespace AucklandRide.Api.Services.SqlService
                 ts.Add(t);
             };
 
-            var stop = await GetById("SELECT r.Id, r.AgencyId, r.ShortName, r.LongName, r.Type, r.Color, r.TextColor, a.Name " +
+            var route = await GetById("SELECT r.Id, r.AgencyId, r.ShortName, r.LongName, r.Type, r.Color, r.TextColor, a.Name " +
                 "FROM Routes AS r JOIN Agencies AS a ON r.AgencyId = a.Id", "r.Id", routeId, addAction);
 
             var trips = await GetAllById("SELECT * FROM Trips", "RouteId", routeId, addTripsAction, "ORDER BY FirstArrivalTime, LastDepartureTime");
-            stop.Trips = trips;
+            route.Trips = trips;
 
-            return stop;
+            return route;
         }
 
         public async Task<List<Shape>> GetShapesById(string shapeId)

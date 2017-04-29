@@ -932,7 +932,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style TargetType="Pivot">
+    <Style x:Key="MainPivotStyle" TargetType="Pivot">
         <Setter Property="Margin" Value="0"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Background" Value="Transparent"/>
@@ -1156,7 +1156,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style TargetType="PivotHeaderItem">
+    <Style x:Key="MainPivotHeaderItemStyle" TargetType="PivotHeaderItem">
         <Setter Property="FontSize" Value="{ThemeResource PivotHeaderItemFontSize}" />
         <Setter Property="FontFamily" Value="{ThemeResource PivotHeaderItemFontFamily}" />
         <Setter Property="FontWeight" Value="{ThemeResource PivotHeaderItemThemeFontWeight}" />
@@ -1296,4 +1296,9 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <DataTemplate x:Key="PivotSubHeader">
+        <TextBlock Text="{Binding}" FontSize="16" FontWeight="SemiBold"/>
+    </DataTemplate>
+
 </ResourceDictionary>

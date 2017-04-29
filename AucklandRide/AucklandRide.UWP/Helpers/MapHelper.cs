@@ -1,4 +1,5 @@
-﻿using AucklandRide.UWP.Models;
+﻿using AucklandRide.UWP.Controls.UserControls;
+using AucklandRide.UWP.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +10,16 @@ using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
 
 namespace AucklandRide.UWP.Helpers
 {
     public class MapHelper
     {
-        public static Geopoint DrawPointOnMap(MapControl mapControl, double latitude, double longitude, string displayText)
+        private static Popup _popup;
+
+        public static Geopoint DrawPointOnMap(MapControl mapControl, double latitude, double longitude, string displayText, Color background, QuickMapControl showTapControl = null)
         {
             var center = new BasicGeoposition()
             {
@@ -39,15 +43,41 @@ namespace AucklandRide.UWP.Helpers
                 Height = 17,
                 Width = 35,
                 Margin = new Thickness(10),
-                Background = new SolidColorBrush(Colors.Black)
+                Background = new SolidColorBrush(background)
             };
 
             grid.Children.Add(text);
+            if (showTapControl != null)
+            {
+                grid.Tag = showTapControl;
+                grid.Tapped -= Grid_Tapped;
+                grid.Tapped += Grid_Tapped;
+            }
+
             MapControl.SetLocation(grid, centerPoint);
             MapControl.SetNormalizedAnchorPoint(grid, new Point(0.5, 0.5));
             mapControl.Children.Add(grid);
 
             return centerPoint;
+        }
+
+        private static void Grid_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            var grid = (Grid)sender;
+            var userControl = (QuickMapControl)grid.Tag;
+            userControl.BackToMapButtonTapped -= new EventHandler(BackToMapButton_Tapped);
+            userControl.BackToMapButtonTapped += new EventHandler(BackToMapButton_Tapped);
+            _popup = new Popup()
+            {
+                Child = userControl,
+                IsOpen = true
+            };
+        }
+
+        private static void BackToMapButton_Tapped(object sender, EventArgs e)
+        {
+            _popup.IsOpen = false;
+            _popup.Child = null;
         }
 
         public static void SetCenterOfPoints(MapControl mapControl, IEnumerable<BasicGeoposition> positions)
