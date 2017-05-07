@@ -15,6 +15,7 @@ namespace AucklandRide.Api.Models
         public string Color { get; set; }
         public string TextColor { get; set; }
         public string AgencyName { get; set; }
+        public string ShortId { get; set; }
         public List<Trip> Trips { get; set; }
     }
 }

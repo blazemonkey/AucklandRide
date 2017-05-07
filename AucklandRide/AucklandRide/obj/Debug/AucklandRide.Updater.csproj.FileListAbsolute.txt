@@ -55,3 +55,4 @@ Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\New
 Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\bin\Debug\RestSharp.xml
 Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\obj\Debug\AucklandRide.Updater.exe
 Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\obj\Debug\AucklandRide.Updater.pdb
+Z:\Programming\Repositories\AucklandRide\AucklandRide\AucklandRide\obj\Debug\AucklandRide.Updater.csprojResolveAssemblyReference.cache

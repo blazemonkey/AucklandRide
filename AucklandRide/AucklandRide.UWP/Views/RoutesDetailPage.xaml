@@ -8,9 +8,11 @@
     xmlns:m="using:AucklandRide.UWP.Models"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d">
 
     <Page.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:StringFormatConverter x:Key="StringFormatConverter"/>
         <DataTemplate x:Key="StopTimesTemplate" x:DataType="m:StopTime">
             <Grid>
@@ -64,6 +66,12 @@
             </Grid>
         </DataTemplate>
     </Page.Resources>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarToggleButton x:Name="AppBarFavorite" Icon="Favorite" Label="Favourite" Click="AppBarFavorite_Click" />
+            <AppBarButton x:Name="AppBarRefresh" Icon="Refresh" Label="Refresh" Click="AppBarRefresh_Click" />
+        </CommandBar>
+    </Page.BottomAppBar>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid>
             <Grid.RowDefinitions>
@@ -91,11 +99,23 @@
                           SelectionChanged="TripsComboBox_SelectionChanged">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding FirstArrivalTime}" />
-                                <TextBlock Text=" - " Margin="3,0"  FontWeight="Light"/>
-                                <TextBlock Text="{Binding LastDepartureTime}" />
-                            </StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding FirstArrivalTime}" />
+                                    <TextBlock Text=" - " Margin="3,0"  FontWeight="Light"/>
+                                    <TextBlock Text="{Binding LastDepartureTime}" />
+                                </StackPanel>
+                                <Grid Grid.Column="2" Background="Green" Width="50" Height="20" 
+                                      Visibility="{Binding IsLive, Mode=OneWay,Converter={StaticResource BooleanToVisibilityConverter}}"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Right">
+                                    <TextBlock Text="LIVE" Foreground="White" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                                </Grid>
+                            </Grid>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
@@ -110,11 +130,11 @@
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                             <CheckBox x:Name="ShowStopCheckBox" IsChecked="{x:Bind ShowStops, Mode=TwoWay}" Content="Show Stops" Margin="10" VerticalAlignment="Center" Click="ShowStopCheckBox_Click"/>
-                            <Button x:Name="ResetMapButton" Content="Reset Map" Margin="10" Click="ResetMapButton_Click"/>
+                            <Button x:Name="ResetMapButton" Content="Fit Map" Margin="10" Click="ResetMapButton_Click"/>
+                            <Button x:Name="CenterLiveButton" Content="Center Live Location" Margin="10" Click="CenterLiveButton_Click"/>
                         </StackPanel>
                         <maps:MapControl Grid.Row="1" x:Name="RoutesMapControl"
-                             MapServiceToken="qSWLBT9ABT1DAmjPgL7R~uMXkT5sDYkXM12vPHi1hQg~Ane0eC65WbHUmPYvLUf1UQ9_cW7HNVTzxjhpGjyyybrc4IeHetL7xZf0uYO1NNnb" 
-                             />
+                             MapServiceToken="qSWLBT9ABT1DAmjPgL7R~uMXkT5sDYkXM12vPHi1hQg~Ane0eC65WbHUmPYvLUf1UQ9_cW7HNVTzxjhpGjyyybrc4IeHetL7xZf0uYO1NNnb" />
                     </Grid>
                 </PivotItem>
                 <PivotItem Header="stop times">
@@ -169,8 +189,37 @@
                         </ListView>
                     </Grid>
                 </PivotItem>
+                <PivotItem Header="live">
+                    <Grid>
+                        <StackPanel HorizontalAlignment="Center" Visibility="{x:Bind IsLive, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock Text="next stop" FontWeight="SemiBold" Margin="20" HorizontalAlignment="Center"/>
+                            <Grid Margin="20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{x:Bind TripUpdate.StopTimeUpdate.StopId, Mode=OneWay}" Width="50" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="{x:Bind TripUpdate.StopTimeUpdate.StopName, Mode=OneWay}" />
+                                    <TextBlock Text="{x:Bind TripUpdate.StopTimeUpdate.StopRegionName, Mode=OneWay}" FontSize="14" Foreground="Gray" FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Visibility="{x:Bind IsLive, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}"
+                                    HorizontalAlignment="Center">
+                            <TextBlock Text="this trip is not currently live" Margin="20"/>                            
+                        </StackPanel>
+                    </Grid>
+                </PivotItem>
             </Pivot>
-
+            <controls:Loading x:Name="LoadingControl" IsLoading="{x:Bind IsLoading, Mode=OneWay}" Grid.RowSpan="3" Background="Gray" Opacity="0.7">
+                <StackPanel Orientation="Horizontal" Padding="12">
+                    <Grid Margin="0,0,8,0">
+                        <ProgressRing IsActive="True" Foreground="{ThemeResource MainThemeColor}" />
+                    </Grid>
+                    <TextBlock Text="Just a sec..." Foreground="Black" VerticalAlignment="Center" FontWeight="SemiBold" />
+                </StackPanel>
+            </controls:Loading>
         </Grid>
     </Grid>
 </Page>

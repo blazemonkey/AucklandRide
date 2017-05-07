@@ -1,4 +1,5 @@
 ﻿using AucklandRide.UWP.Models;
+using AucklandRide.UWP.Models.AT;
 using AucklandRide.UWP.Services;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -30,6 +32,8 @@ namespace AucklandRide.UWP.Views
     /// </summary>
     public sealed partial class RoutesPage : Page, INotifyPropertyChanged
     {
+        private ActiveTrip ActiveTrips { get; set; }
+
         private Route _lastRoute;
         private bool _isLoading;
 
@@ -67,12 +71,12 @@ namespace AucklandRide.UWP.Views
         {
             base.OnNavigatedTo(e);
 
+            IsLoading = true;
             if (CollectionViewSource.Source == null)
-            {
-                IsLoading = true;
+            {                
                 Routes = await RestService.GetRoutes();
                 CollectionViewSource.Source = Routes;
-                IsLoading = false;
+                
             }
 
             await UpdateForVisualState(AdaptiveStates.CurrentState);
@@ -80,6 +84,27 @@ namespace AucklandRide.UWP.Views
             // Don't play a content transition for first item load.
             // Sometimes, this content will be animated as part of the page transition.
             DisableContentTransitions();
+
+            ActiveTrips = await RestService.GetActiveTrips();
+
+            var favRoutes = new List<Route>();
+            var localSettings = ApplicationData.Current.LocalSettings;
+            foreach (var ls in localSettings.Values)
+            {
+                if (ls.Key.StartsWith("r") && (bool)ls.Value == true)
+                {
+                    var id = ls.Key.Substring(1);
+                    var route = Routes.FirstOrDefault(x => x.ShortId == id);
+                    route.IsLive = ActiveTrips.Response.Entity.Any(x => x.TripUpdate.Trip.RouteId == route.Id);
+                    if (route != null)
+                    {
+                        favRoutes.Add(route);
+                    }
+                }
+            }
+
+            RoutesFavList.ItemsSource = favRoutes.OrderBy(x => x.ShortName);
+            IsLoading = false;
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -121,6 +146,7 @@ namespace AucklandRide.UWP.Views
             if (AdaptiveStates.CurrentState == NarrowState)
             {
                 _lastRoute = await RestService.GetRouteById(_lastRoute.Id);
+                _lastRoute.ActiveTrips = ActiveTrips.Response.Entity.Where(x => x.TripUpdate.Trip.RouteId == _lastRoute.Id).ToList();
                 Frame.Navigate(typeof(RoutesDetailPage), _lastRoute, new DrillInNavigationTransitionInfo());
             }
             else

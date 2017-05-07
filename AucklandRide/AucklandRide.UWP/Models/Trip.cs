@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AucklandRide.UWP.Models.AT;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,5 +19,7 @@ namespace AucklandRide.UWP.Models
         public TimeSpan? FirstArrivalTime { get; set; }
         public TimeSpan? LastDepartureTime { get; set; }
         public List<StopTime> StopTimes { get; set; }
+        public bool IsLive { get; set; }
+        public TripEntity Live { get; set; }
     }
 }

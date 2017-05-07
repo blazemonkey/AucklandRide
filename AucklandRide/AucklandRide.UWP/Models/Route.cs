@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AucklandRide.UWP.Models.AT;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,9 @@ namespace AucklandRide.UWP.Models
         public string Color { get; set; }
         public string TextColor { get; set; }
         public string AgencyName { get; set; }
+        public string ShortId { get; set; }
         public List<Trip> Trips { get; set; }
+        public bool IsLive { get; set; }
+        public List<TripEntity> ActiveTrips { get; set; }
     }
 }

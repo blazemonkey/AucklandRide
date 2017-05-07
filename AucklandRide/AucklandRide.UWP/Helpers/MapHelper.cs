@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Shapes;
 
 namespace AucklandRide.UWP.Helpers
 {
@@ -40,6 +41,7 @@ namespace AucklandRide.UWP.Helpers
 
             var grid = new Grid
             {
+                Name = "Point",
                 Height = 17,
                 Width = 35,
                 Margin = new Thickness(10),
@@ -54,6 +56,59 @@ namespace AucklandRide.UWP.Helpers
                 grid.Tapped += Grid_Tapped;
             }
 
+            Canvas.SetZIndex(grid, 0);
+            MapControl.SetLocation(grid, centerPoint);
+            MapControl.SetNormalizedAnchorPoint(grid, new Point(0.5, 0.5));
+            mapControl.Children.Add(grid);
+
+            return centerPoint;
+        }
+
+        public static Geopoint DrawBusOnMap(MapControl mapControl, double latitude, double longitude)
+        {
+            var center = new BasicGeoposition()
+            {
+                Latitude = latitude,
+                Longitude = longitude
+            };
+            var centerPoint = new Geopoint(center);
+
+            var text = new TextBlock
+            {
+                FontFamily = new FontFamily("Segoe MDL2 Assets"),
+                FontSize = 20,
+                Text = "\uE806",
+                Foreground = new SolidColorBrush(Colors.White),
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+
+            var grid = new Grid()
+            {
+                Name = "Live"
+            };
+            var ellipse = new Ellipse
+            {
+                Height = 50,
+                Width = 50,
+                Fill = new SolidColorBrush(Colors.DeepSkyBlue)
+            };
+
+            var exist = mapControl.Children.Where(x => x.GetType() == typeof(Grid));
+            if (exist != null)
+            {
+                foreach (var c in exist)
+                {
+                    var gridExist = (Grid)c;
+                    if (gridExist.Name == "Live")
+                        mapControl.Children.Remove(gridExist);
+                }
+            }
+
+            grid.Children.Add(ellipse);
+            grid.Children.Add(text);
+
+            Canvas.SetZIndex(grid, 100);
             MapControl.SetLocation(grid, centerPoint);
             MapControl.SetNormalizedAnchorPoint(grid, new Point(0.5, 0.5));
             mapControl.Children.Add(grid);
@@ -140,7 +195,7 @@ namespace AucklandRide.UWP.Helpers
             mapControl.Center = new Geopoint(geoposition);
         }
 
-        public static void DrawShapes(MapControl mapControl, IEnumerable<Shape> shapes)
+        public static void DrawShapes(MapControl mapControl, IEnumerable<Models.Shape> shapes)
         {
             mapControl.MapElements.Clear();
 

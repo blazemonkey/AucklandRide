@@ -29,25 +29,20 @@ namespace AucklandRide.Updater
             var updateReq = IsNewVersionDetected(dbVers, latestVers);
             if (!updateReq)
             {
-                //var agencies = WebClientService.GetAgencies();
-                //var calendars = WebClientService.GetCalendars();
-                //var calendarDates = WebClientService.GetCalendarDates();
-                //var routes = WebClientService.GetRoutes();
-                //var shapes = WebClientService.GetShapes();
-                //var stops = WebClientService.GetStops();
-                //var stopTimes = WebClientService.GetStopTimes();
-                //var trips = WebClientService.GetTrips();
+                var agencies = WebClientService.GetAgencies();
+                var calendars = WebClientService.GetCalendars();
+                var calendarDates = WebClientService.GetCalendarDates();
+                var routes = WebClientService.GetRoutes();
+                var shapes = WebClientService.GetShapes();
+                var stops = WebClientService.GetStops();
+                var stopTimes = WebClientService.GetStopTimes();
+                var trips = WebClientService.GetTrips();
 
-                //await Task.WhenAll(agencies, calendars, calendarDates, routes, shapes, stops, stopTimes, trips);
-                //await SqlService.DeleteAndReplaceAll(agencies.Result, calendars.Result, calendarDates.Result, routes.Result,
-                //    shapes.Result, stops.Result, stopTimes.Result, trips.Result);
+                await Task.WhenAll(agencies, calendars, calendarDates, routes, shapes, stops, stopTimes, trips);
+                await SqlService.DeleteAndReplaceAll(agencies.Result, calendars.Result, calendarDates.Result, routes.Result,
+                    shapes.Result, stops.Result, stopTimes.Result, trips.Result);
 
-                var stops = await WebClientService.GetStops();
-                await GetLocationFromGoogle(stops);
-
-                //var routes = await WebClientService.GetRoutes();
-                //await SqlService.DeleteAndReplaceAll(null, null, null, routes, null, null, null, null);
-
+                await GetLocationFromGoogle(stops.Result);
 
                 await SqlService.UpdateTripsTime();
                 await SqlService.AddVersions(latestVers);

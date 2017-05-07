@@ -114,6 +114,8 @@
     <Compile Include="Converters\PrependTextConverter.cs" />
     <Compile Include="Converters\StringFormatConverter.cs" />
     <Compile Include="Helpers\MapHelper.cs" />
+    <Compile Include="Models\AT\ActiveTrip.cs" />
+    <Compile Include="Models\AT\ActiveVehicle.cs" />
     <Compile Include="Models\Calendar.cs" />
     <Compile Include="Models\CalendarDate.cs" />
     <Compile Include="Models\NavMenuItem.cs" />
@@ -205,6 +207,15 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>5.2.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp">
+      <Version>1.4.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.DeveloperTools">
+      <Version>1.4.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
+      <Version>1.4.1</Version>
     </PackageReference>
     <PackageReference Include="Prism.Core">
       <Version>6.3.0</Version>

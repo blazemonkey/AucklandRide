@@ -83,13 +83,15 @@ namespace AucklandRide.Api.Services.SqlService
                     Type = reader.GetByte(4),
                     Color = SafeGetString(reader, 5),
                     TextColor = SafeGetString(reader, 6),
-                    AgencyName = reader.GetString(7)
+                    AgencyName = reader.GetString(7),
+                    ShortId = reader.GetString(8)
                 };
                 routes.Add(route);
             };
 
-            return await GetAll("SELECT r.Id, r.AgencyId, r.ShortName, r.LongName, r.Type, r.Color, r.TextColor, a.Name " +
-                "FROM Routes AS r JOIN Versions AS v ON r.Version = v.Version JOIN Agencies AS a ON r.AgencyId = a.Id WHERE r.Version = v.Version ORDER BY ShortName", addAction);
+            return await GetAll("SELECT r.Id, r.AgencyId, r.ShortName, r.LongName, r.Type, r.Color, r.TextColor, a.Name, r.ShortId " +
+                "FROM Routes AS r JOIN Versions AS v ON r.Version = v.Version JOIN Agencies AS a ON r.AgencyId = a.Id WHERE r.Version = v.Version " +
+                "AND v.StartDate <= GETUTCDATE() AND v.EndDate >= GETUTCDATE() ORDER BY ShortName", addAction);
         }
 
         public async Task<Route> GetRouteById(string routeId)
@@ -105,7 +107,8 @@ namespace AucklandRide.Api.Services.SqlService
                     Type = reader.GetByte(4),
                     Color = SafeGetString(reader, 5),
                     TextColor = SafeGetString(reader, 6),
-                    AgencyName = reader.GetString(7)
+                    AgencyName = reader.GetString(7),
+                    ShortId = reader.GetString(8)
                 };
 
                 return s;
@@ -128,7 +131,7 @@ namespace AucklandRide.Api.Services.SqlService
                 ts.Add(t);
             };
 
-            var route = await GetById("SELECT r.Id, r.AgencyId, r.ShortName, r.LongName, r.Type, r.Color, r.TextColor, a.Name " +
+            var route = await GetById("SELECT r.Id, r.AgencyId, r.ShortName, r.LongName, r.Type, r.Color, r.TextColor, a.Name, r.ShortId " +
                 "FROM Routes AS r JOIN Agencies AS a ON r.AgencyId = a.Id", "r.Id", routeId, addAction);
 
             var trips = await GetAllById("SELECT * FROM Trips", "RouteId", routeId, addTripsAction, "ORDER BY FirstArrivalTime, LastDepartureTime");
