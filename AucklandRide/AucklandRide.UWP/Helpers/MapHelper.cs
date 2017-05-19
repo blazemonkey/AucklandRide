@@ -22,6 +22,9 @@ namespace AucklandRide.UWP.Helpers
 
         public static Geopoint DrawPointOnMap(MapControl mapControl, double latitude, double longitude, string displayText, Color background, QuickMapControl showTapControl = null)
         {
+            if (mapControl == null)
+                return null;
+
             var center = new BasicGeoposition()
             {
                 Latitude = latitude,

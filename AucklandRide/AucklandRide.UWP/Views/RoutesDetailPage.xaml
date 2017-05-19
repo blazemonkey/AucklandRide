@@ -140,7 +140,8 @@
                 <PivotItem Header="stop times">
                     <ListView Grid.Row="1"
                             x:Name="StopTimesList" 
-                            ItemTemplate="{StaticResource StopTimesTemplate}" />
+                            ItemTemplate="{StaticResource StopTimesTemplate}" 
+                            SelectionMode="None"/>
                 </PivotItem>
                 <PivotItem Header="calendar">
                     <Grid Margin="10">
@@ -180,7 +181,8 @@
                         </StackPanel>
                         <ListView Grid.Row="3"
                                   x:Name="CalendarDatesList"
-                                  Margin="10">
+                                  Margin="10"
+                                  SelectionMode="None">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="m:CalendarDate">
                                     <TextBlock Text="{x:Bind Date, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:dd/MM/yyyy}', Mode=OneWay}"/>

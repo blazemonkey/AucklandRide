@@ -10,19 +10,83 @@
     xmlns:converters="using:AucklandRide.UWP.Converters"
     xmlns:prism="using:Prism.Windows.Mvvm"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
 
     <Page.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:DateTimeOffsetConverter x:Key="DateTimeOffsetConverter"/>
+        <converters:InverseConverter x:Key="InverseConverter"/>
+        <converters:StringFormatConverter x:Key="StringFormatConverter"/>
         <CollectionViewSource x:Key="CollectionViewSource" x:Name="CollectionViewSource" />
+        <DataTemplate x:Key="StopTimesHeaderTemplate">
+            <Grid Background="WhiteSmoke" Padding="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="72"/>
+                    <ColumnDefinition Width="35"/>
+                    <ColumnDefinition Width="240"/>
+                    <ColumnDefinition Width="240"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Stop No." />
+                <TextBlock Grid.Column="1" Text="#" />
+                <TextBlock Grid.Column="2" Text="Stop Name" />
+                <TextBlock Grid.Column="3" Text="Arrival Time / Departure Time"/>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="StopTimesTemplate" x:DataType="m:StopTime">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Width="40" Height="20" Background="Black">
+                    <TextBlock Foreground="White" 
+                                VerticalAlignment="Center" 
+                                HorizontalAlignment="Center"
+                                Text="{x:Bind StopId}"
+                                FontSize="12" 
+                                Margin="5"/>
+                </Grid>
+                <TextBlock Grid.Column="1"
+                           Text="{x:Bind StopSequence}"
+                           Width="70"
+                           TextAlignment="Center"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center" />
+                <TextBlock Grid.Column="2"
+                            Text="{x:Bind StopName}"
+                            Margin="5"
+                            VerticalAlignment="Center" 
+                            Width="250"
+                            TextWrapping="Wrap"/>
+                <StackPanel Grid.Column="3" Orientation="Horizontal">
+                    <TextBlock Width="60"
+                                Text="{x:Bind ArrivalTime}"
+                                Margin="5"
+                                VerticalAlignment="Center" 
+                                Foreground="Gray"
+                                FontWeight="SemiBold"/>
+                    <TextBlock Text="/" VerticalAlignment="Center"
+                                   Foreground="Gray" />
+                    <TextBlock Width="60"
+                                Text="{x:Bind DepartureTime}"
+                                Margin="5"
+                                VerticalAlignment="Center" 
+                                Foreground="Gray"
+                                FontWeight="SemiBold" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
         <DataTemplate x:Key="RoutesListTemplate" x:DataType="m:Route">
             <Grid Margin="5" HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="70"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <StackPanel HorizontalAlignment="Center">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <TextBlock Text="{x:Bind ShortName}" Width="50" VerticalAlignment="Center" FontWeight="SemiBold" HorizontalAlignment="Center" TextAlignment="Center"/>
                     <Grid Grid.Column="2" Background="Green" Width="50" Height="20" 
                       Visibility="{x:Bind IsLive, Mode=OneWay,Converter={StaticResource BooleanToVisibilityConverter}}"
@@ -37,13 +101,184 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Key="RoutesDetailTemplate" x:DataType="m:Route">
+        <DataTemplate x:Key="RoutesDetailTemplate" x:DataType="m:CombinedData">
             <Grid>
-
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="75"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Background="SlateGray">
+                    <Grid HorizontalAlignment="Center"
+                          VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="75"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{x:Bind Route.ShortName, Mode=OneWay}" Foreground="White" FontSize="28" VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="{x:Bind Route.LongName, Mode=OneWay}" Foreground="White" FontSize="24" FontWeight="Light"/>
+                            <TextBlock Text="{x:Bind Route.AgencyName, Mode=OneWay}" Foreground="WhiteSmoke" FontSize="16" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+                <Grid Background="#34323F"
+                      Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Select a Trip"
+                                   Margin="10"
+                                   VerticalAlignment="Center"
+                                   Foreground="White"/>
+                    <ComboBox x:Name="TripsComboBox"
+                          Grid.Column="1"
+                          ItemsSource="{x:Bind Route.Trips, Mode=OneWay}"
+                          SelectedItem="{x:Bind SelectedTrip, Mode=OneWay}"
+                          HorizontalAlignment="Stretch"
+                          Margin="10" 
+                          SelectionChanged="TripsComboBox_SelectionChanged">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding FirstArrivalTime}" />
+                                        <TextBlock Text=" - " Margin="3,0"  FontWeight="Light"/>
+                                        <TextBlock Text="{Binding LastDepartureTime}" />
+                                    </StackPanel>
+                                    <Grid Grid.Column="2" Background="Green" Width="50" Height="20" 
+                                      Visibility="{Binding IsLive, Mode=OneWay,Converter={StaticResource BooleanToVisibilityConverter}}"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Right">
+                                        <TextBlock Text="LIVE" Foreground="White" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </Grid>
+                <Pivot Grid.Row="2" Style="{StaticResource MainPivotStyle}">
+                    <Pivot.Resources>
+                        <Style TargetType="PivotHeaderItem" BasedOn="{StaticResource MainPivotHeaderItemStyle}" />
+                    </Pivot.Resources>
+                    <PivotItem Margin="-10,0,-10,0">
+                        <PivotItem.Header>
+                            <ctl:TabHeaderSmall Label="Map" Glyph="&#xE707;" />
+                        </PivotItem.Header>
+                        <maps:MapControl x:Name="RoutesMapControl"
+                             MapServiceToken="qSWLBT9ABT1DAmjPgL7R~uMXkT5sDYkXM12vPHi1hQg~Ane0eC65WbHUmPYvLUf1UQ9_cW7HNVTzxjhpGjyyybrc4IeHetL7xZf0uYO1NNnb" 
+                             Loaded="RoutesMapControl_Loaded"/>
+                    </PivotItem>
+                    <PivotItem Margin="-10,0,-10,0">
+                        <PivotItem.Header>
+                            <ctl:TabHeaderSmall Label="Stop Times" Glyph="&#xE121;" />
+                        </PivotItem.Header>
+                        <ListView Grid.Row="1"
+                            x:Name="StopTimesList" 
+                            Margin="20"
+                            ItemTemplate="{StaticResource StopTimesTemplate}" 
+                            HeaderTemplate="{StaticResource StopTimesHeaderTemplate}"
+                            ItemsSource="{x:Bind StopTimes, Mode=OneWay}"
+                            HorizontalAlignment="Center"
+                            SelectionMode="None"/>
+                    </PivotItem>
+                    <PivotItem Margin="-10,0,-10,0">
+                        <PivotItem.Header>
+                            <ctl:TabHeaderSmall Label="Calendar" Glyph="&#xE787;" />
+                        </PivotItem.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
+                                <TextBlock Text="Schedule valid from" FontSize="18"/>
+                                <TextBlock Text="{x:Bind Calendar.StartDate.Date, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:dd/MM/yyyy}', Mode=OneWay}" Margin="2,0" FontSize="18" FontWeight="SemiBold"/>
+                                <TextBlock Text="to" Margin="2,0" FontSize="18"/>
+                                <TextBlock Text="{x:Bind Calendar.EndDate.Date, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:dd/MM/yyyy}', Mode=OneWay}" Margin="2,0" FontSize="18" FontWeight="SemiBold"/>
+                            </StackPanel>
+                            <Grid Grid.Row="1" Margin="10" HorizontalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <CalendarView x:Name="CalendarView" MinDate="{x:Bind Calendar.StartDate, Mode=OneWay, Converter={StaticResource DateTimeOffsetConverter}}" 
+                                          MaxDate="{x:Bind Calendar.EndDate, Mode=OneWay, Converter={StaticResource DateTimeOffsetConverter}}" 
+                                          CalendarViewDayItemChanging="CalendarView_CalendarViewDayItemChanging"
+                                          IsTodayHighlighted="False"/>
+                                <Grid Margin="10" Grid.Row="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.5*"/>
+                                        <ColumnDefinition Width="0.5*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <CheckBox Content="Monday" IsChecked="{x:Bind Calendar.Monday, Mode=OneWay}" Width="120" Margin="10" IsHitTestVisible="False"/>
+                                    <CheckBox Grid.Row="1" Content="Tuesday" IsChecked="{x:Bind Calendar.Tuesday, Mode=OneWay}" Width="120" Margin="10" IsHitTestVisible="False"/>
+                                    <CheckBox Grid.Row="2" Content="Wednesday" IsChecked="{x:Bind Calendar.Wednesday, Mode=OneWay}" Width="120" Margin="10" IsHitTestVisible="False"/>
+                                    <CheckBox Grid.Row="3" Content="Thursday" IsChecked="{x:Bind Calendar.Thursday, Mode=OneWay}" Width="120" Margin="10" IsHitTestVisible="False"/>
+                                    <CheckBox Grid.Column="1" Content="Friday" IsChecked="{x:Bind Calendar.Friday, Mode=OneWay}" Width="120" Margin="10" IsHitTestVisible="False"/>
+                                    <CheckBox Grid.Column="1" Grid.Row="1" Content="Saturday" IsChecked="{x:Bind Calendar.Saturday, Mode=OneWay}" Width="120" Margin="10" IsHitTestVisible="False"/>
+                                    <CheckBox Grid.Column="1" Grid.Row="2" Content="Sunday" IsChecked="{x:Bind Calendar.Sunday, Mode=OneWay}" Width="120" Margin="10" IsHitTestVisible="False"/>
+                                </Grid>
+                                <Grid Grid.Column="1"
+                                  Grid.RowSpan="2"
+                                      Margin="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="No trip on following dates"/>
+                                    </StackPanel>
+                                    <ListView x:Name="CalendarDatesList"         
+                                              Grid.Row="1"
+                                              ItemsSource="{x:Bind Calendar.CalendarDates, Mode=OneWay}"
+                                              Margin="10"
+                                              SelectionMode="None">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate x:DataType="m:CalendarDate">
+                                                <TextBlock Text="{x:Bind Date, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:dd/MM/yyyy}', Mode=OneWay}"/>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </PivotItem>
+                    <PivotItem Margin="-10,0,-10,0">
+                        <PivotItem.Header>
+                            <ctl:TabHeaderSmall Label="Live" Glyph="&#xE957;" />
+                        </PivotItem.Header>
+                    </PivotItem>
+                </Pivot>
             </Grid>
         </DataTemplate>
     </Page.Resources>
-
+    <Page.BottomAppBar>
+        <CommandBar x:Name="CommandBar" IsEnabled="{x:Bind IsLoading, Mode=OneWay, Converter={StaticResource InverseConverter}}">
+            <AppBarToggleButton x:Name="AppBarFavorite" Icon="Favorite" Label="Favourite" Click="AppBarFavorite_Click" />
+            <AppBarButton x:Name="AppBarRefresh" Icon="Refresh" Label="Refresh" Click="AppBarRefresh_Click" />
+            <CommandBar.SecondaryCommands>
+                <AppBarToggleButton x:Name="AppBarShowStops" Label="Show Stops" Click="AppBarShowStops_Click" IsChecked="{x:Bind ShowStops, Mode=TwoWay}"/>
+                <AppBarButton x:Name="AppBarFitMap" Label="Fit Map" Click="AppBarFitMap_Click"/>
+                <AppBarButton x:Name="AppBarCenterLiveLocation" Label="Center Live Location" Click="AppBarCenterLiveLocation_Click"/>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
     <Page.Transitions>
         <TransitionCollection>
             <NavigationThemeTransition />
@@ -58,7 +293,7 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-
+                        <Setter Target="CommandBar.Visibility" Value="Visible"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="NarrowState">
@@ -72,6 +307,7 @@
                         <Setter Target="DetailFavColumn.Width" Value="0" />
                         <Setter Target="RoutesList.SelectionMode" Value="None" />
                         <Setter Target="RoutesFavList.SelectionMode" Value="None" />
+                        <Setter Target="CommandBar.Visibility" Value="Collapsed"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -101,19 +337,20 @@
                     </PivotItem.Header>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition x:Name="MasterColumn" Width="360" />
+                            <ColumnDefinition x:Name="MasterColumn" Width="400" />
                             <ColumnDefinition x:Name="DetailColumn" Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0" Visibility="{x:Bind IsLoading, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="75"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Grid Background="SlateGray">
                                 <TextBox x:Name="FilterTextBox"
                                          Margin="20"
                                          Height="24" 
-                                         PlaceholderText="Enter Route's Name"/>
+                                         PlaceholderText="Enter Route's Name"
+                                         VerticalAlignment="Center"/>
                             </Grid>
                             <ListView Grid.Row="1"
                                   x:Name="RoutesList" 
@@ -127,8 +364,7 @@
                         <ContentPresenter Visibility="{x:Bind IsLoading, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}"
                             x:Name="DetailContentPresenter"
                             Grid.Column="1"
-                            Padding="24,0"
-                            Content="{x:Bind RoutesList.SelectedItem, Mode=OneWay}"
+                            Content="{x:Bind CombinedData, Mode=OneWay}"
                             ContentTemplate="{StaticResource RoutesDetailTemplate}">
                             <ContentPresenter.ContentTransitions>
                                 <!-- Empty by default. See MasterListView_ItemClick -->
@@ -143,7 +379,7 @@
                     </PivotItem.Header>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition x:Name="MasterFavColumn" Width="360" />
+                            <ColumnDefinition x:Name="MasterFavColumn" Width="400" />
                             <ColumnDefinition x:Name="DetailFavColumn" Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0" Visibility="{x:Bind IsLoading, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}">
@@ -172,6 +408,14 @@
                     <ProgressRing IsActive="True" Foreground="{ThemeResource MainThemeColor}" />
                 </Grid>
                 <TextBlock Text="Retrieving Routes...Please Wait..." Foreground="Black" VerticalAlignment="Center" FontWeight="SemiBold" />
+            </StackPanel>
+        </controls:Loading>
+        <controls:Loading x:Name="LoadingRouteControl" IsLoading="{x:Bind IsLoadingRoute, Mode=OneWay}" Grid.RowSpan="2" Background="Gray" Opacity="0.7">
+            <StackPanel Orientation="Horizontal" Padding="12">
+                <Grid Margin="0,0,8,0">
+                    <ProgressRing IsActive="True" Foreground="{ThemeResource MainThemeColor}" />
+                </Grid>
+                <TextBlock Text="Just a sec..." Foreground="Black" VerticalAlignment="Center" FontWeight="SemiBold" />
             </StackPanel>
         </controls:Loading>
     </Grid>

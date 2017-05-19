@@ -109,8 +109,13 @@
     <Compile Include="Controls\UserControls\TabHeader.xaml.cs">
       <DependentUpon>TabHeader.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\UserControls\TabHeaderSmall.xaml.cs">
+      <DependentUpon>TabHeaderSmall.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\AppendTextConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\DateTimeOffsetConverter.cs" />
+    <Compile Include="Converters\InverseConverter.cs" />
     <Compile Include="Converters\PrependTextConverter.cs" />
     <Compile Include="Converters\StringFormatConverter.cs" />
     <Compile Include="Helpers\MapHelper.cs" />
@@ -118,6 +123,7 @@
     <Compile Include="Models\AT\ActiveVehicle.cs" />
     <Compile Include="Models\Calendar.cs" />
     <Compile Include="Models\CalendarDate.cs" />
+    <Compile Include="Models\CombinedData.cs" />
     <Compile Include="Models\NavMenuItem.cs" />
     <Compile Include="Models\Route.cs" />
     <Compile Include="Models\Shape.cs" />
@@ -176,6 +182,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\UserControls\TabHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\UserControls\TabHeaderSmall.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

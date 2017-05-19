@@ -95,19 +95,12 @@ namespace AucklandRide.UWP.Views
         {
             var route = (Route)e.Parameter;
             Route = route;
-
             Trips = Route.Trips;
-            foreach (var t in Trips)
-            {
-                if (Route.ActiveTrips.Select(x => x.TripUpdate.Trip.TripId).Contains(t.Id))
-                {
-                    t.IsLive = true;
-                    t.Live = Route.ActiveTrips.FirstOrDefault(x => x.TripUpdate.Trip.TripId == t.Id);
-                }
-            }
 
-            Trips = Trips.OrderByDescending(x => x.IsLive).ToList();
-            SelectedTrip = Trips.FirstOrDefault();            
+            if (Trips.Any(x => x.IsLive))
+                SelectedTrip = Trips.First(x => x.IsLive);
+            else
+                SelectedTrip = Trips.FirstOrDefault();            
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
