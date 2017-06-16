@@ -18,6 +18,8 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.Azure.Mobile;
+using Microsoft.Azure.Mobile.Analytics;
 
 namespace AucklandRide.UWP
 {
@@ -43,6 +45,7 @@ namespace AucklandRide.UWP
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            MobileCenter.Start("190659db-cf59-41de-a043-f632d8261d2e", typeof(Analytics));
 
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
